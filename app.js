@@ -9,9 +9,10 @@ const CANCEL_TEXT = 'Back 🔙';
 
 bot.start((msg) => msg.reply('Welcome'));
 bot.on(message('sticker'), (msg) => msg.reply('👍'));
+bot.hears("msg", (msg) => console.log((msg.from.id) ))
 
 bot.hears("techno360", async (msg) => {
-	await Parse("https://www.techno360.in").then( (result) => {
+	await Parse("https://www.techno360.in", msg.from.id).then( (result) => {
 		for (const key in result) {
 			msg.replyWithPhoto(
 				result[key].img,

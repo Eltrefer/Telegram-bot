@@ -9,9 +9,11 @@ export default class Memory {
 	isExist() { return !!this.data[this.user] }
 	isEmpty() { return !!this.data }
 	create() { this.user[this.updateValue(null)] }
+	delete() { delete this.data[this.user] }
 	updateValue(newValue) {
 		this.data[this.user] = newValue;
 		const updatedJsonData = JSON.stringify(this.data, null, 2);
 		fs.writeFileSync("memory.json", updatedJsonData);
 	}
 }
+

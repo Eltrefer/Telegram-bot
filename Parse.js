@@ -8,7 +8,6 @@ export async function Parse(url, userId) {
   return await axios.get(url).then( (html, result = {}) => {
     const file = cheerio.load(html.data);
     
-    if (!User.isExist()) User.create()
     file(".post-column").each( function(i) {
       if (file(this).find(".entry-title").text() !== User.data[userId]) {
         result[i] = {

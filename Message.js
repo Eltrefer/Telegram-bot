@@ -1,8 +1,10 @@
-import { Markup } from "telegraf";
+import { Markup, Telegram } from "telegraf";
 import { Parse } from "./Parse.js";
 import { message } from "telegraf/filters"; 
 import Memory from "./Memory.js";
 import * as fs from "fs"
+
+import cron from "node-cron";
 
 export class Message {
 	constructor(bot) {
@@ -15,25 +17,6 @@ export class Message {
 		this.bot.start((msg) => msg.reply('Welcome'));
 		this.bot.on(message('sticker'), (msg) => msg.reply('👍'));
 		this.bot.hears("msg", (msg) => console.log((msg.from.id) ))
-		
-		this.bot.hears("techno360", async (msg) => {
-			await Parse("https://www.techno360.in", msg.from.id).then( (result) => {
-				const data = JSON.parse( fs.readFileSync("memory.json", 'utf8') );
-				for (const id in data) {
-					console.log( id );
-					for (const key in result) {
-						msg.replyWithPhoto(
-							result[key].img,
-							{caption: `
-								<strong>${ result[key].title }</strong>
-								\n${result[key].description}...
-								\n<a href="${result[key].url}">⤷ Product link </a> | #Techno360`,
-							parse_mode: "HTML" }
-						)
-					}
-				}
-			})
-		});
 		
 		this.bot.command("keyboard", (msg) => {
 			msg.reply("here it is", Markup.keyboard(
@@ -48,15 +31,24 @@ export class Message {
 			const User = new Memory(msg.from.id)
 			User.delete()
 		})
+
+		cron.schedule('* * */24 * * *', async () => {
+			const data = JSON.parse( fs.readFileSync("memory.json", 'utf8') );
+			for (const id in data) {
+				await Parse("https://www.techno360.in", id).then( (result) => {
+					for (const key in result) {
+						this.bot.telegram.sendPhoto(
+							id,
+							result[key].img,
+							{caption: `
+								<strong>${ result[key].title }</strong>
+								\n${result[key].description}...
+								\n<a href="${result[key].url}">⤷ Product link </a> | #Techno360`,
+							parse_mode: "HTML" }
+						)
+					}
+				})
+			}
+		})
 	}
 }
-
-// const CronJob = require('../lib/cron.js').CronJob;
-
-// console.log('Before job instantiation');
-// const job = new CronJob('0 */10 * * * *', function() {
-// 	const d = new Date();
-// 	console.log('Every Tenth Minute:', d);
-// });
-// console.log('After job instantiation');
-// job.start();

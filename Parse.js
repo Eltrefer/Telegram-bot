@@ -2,14 +2,15 @@ import * as cheerio from "cheerio"
 import axios from "axios"
 import Memory from "./Memory.js";
 
-export async function Parse(url, userId) {
-  const User = new Memory(userId);
+export async function Parse(url, userID) {
+  const User = new Memory(userID);
   
-  return await axios.get(url).then( (html, result = {}) => {
+  return await axios.get(url)
+  .then( (html, result = {}) => {
     const file = cheerio.load(html.data);
     
     file(".post-column").each( function(i) {
-      if (file(this).find(".entry-title").text() !== User.data[userId]) {
+      if (file(this).find(".entry-title").text() !== User.data[userID]) {
         result[i] = {
           img: file(this).find("img").attr("src"),
           title: file(this).find(".entry-title").text(),

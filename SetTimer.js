@@ -20,6 +20,5 @@ export default function SetTimer(interval) {
 				)
 			}}
 		})
-		console.log("it work");
 	})
 }

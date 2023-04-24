@@ -1,6 +1,6 @@
 const cheerio = require("cheerio");
 const axios = require("axios");
-const Memory = require("./Memory.js");
+const Memory = require("../Memory/Memory.js");
 
 async function Parse(url, userID) {
   const User = new Memory(userID);

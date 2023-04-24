@@ -1,10 +1,11 @@
 const fs = require("fs");
 const cron = require("node-cron");
-const Parse = require("./Parse.js");
+const Parse = require("../Parse/Parse.js");
 
 function SetTimer(bot, interval) {
 	cron.schedule(interval, async () => {
-		const data = JSON.parse( fs.readFileSync("memory.json", 'utf8') );
+		process.chdir(__dirname);
+		const data = JSON.parse( fs.readFileSync("../Memory/memory.json", 'utf8') );
 		const firstID = Object.keys(data)[0];
 		await Parse("https://www.techno360.in", firstID)
 		.then( (result) => {

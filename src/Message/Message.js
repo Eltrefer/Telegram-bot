@@ -1,5 +1,5 @@
 const { Markup } = require("telegraf");
-const Memory = require("./Memory.js");
+const Memory = require("../Memory/Memory.js");
 const SetTimer = require("./SetTimer.js");
 
 function init(bot) {

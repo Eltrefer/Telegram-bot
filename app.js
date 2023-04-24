@@ -1,5 +1,5 @@
 const { Telegraf } = require("telegraf");
-const init = require("./Message.js");
+const init = require("./src/Message/Message.js");
 require("./.env")
 
 const bot = new Telegraf(process.env.TOKEN);

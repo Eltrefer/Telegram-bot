@@ -2,11 +2,12 @@ import * as fs from "fs"
 import cron from "node-cron";
 import { Parse } from "./Parse.js";
 
-export default function SetTimer(interval) {
+export default function SetTimer(bot, interval) {
 	cron.schedule(interval, async () => {
 		const data = JSON.parse( fs.readFileSync("memory.json", 'utf8') );
 		const firstID = Object.keys(data)[0];
-		await Parse("https://www.techno360.in", firstID).then( (result) => {
+		await Parse("https://www.techno360.in", firstID)
+		.then( (result) => {
 			for (const key in result) {
 			for (const id in data) {
 				bot.telegram.sendPhoto(

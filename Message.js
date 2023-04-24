@@ -18,6 +18,6 @@ export default function init(bot) {
 	bot.command("remove", (msg) => {
 		const User = new Memory(msg.from.id)
 		User.delete()
-	})	
-	SetTimer('* * */12 * * *')
+	})
+	SetTimer(bot, '* * */12 * * *')
 }

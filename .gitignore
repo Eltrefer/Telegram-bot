@@ -1,2 +1,4 @@
 memory.json
 TOKEN.js
+node_modules
+.env

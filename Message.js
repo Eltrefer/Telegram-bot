@@ -1,23 +1,40 @@
-import { Markup } from "telegraf";
-import Memory from "./Memory.js";
-import SetTimer from "./SetTimer.js";
+const { Markup } = require("telegraf");
+const Memory = require("./Memory.js");
+const SetTimer = require("./SetTimer.js");
 
-export default function init(bot) {
-	const CANCEL_TEXT = 'Back 🔙';
-	
-	bot.start((msg) => msg.reply('Welcome'));
+function init(bot) {
+	bot.start((msg) => {
+		try {
+			msg.reply("Welcome!\nUse /add command to get the latest novelties\nUse /remove to stop it\n\nUse /keyboard if buttons disappear",
+				Markup.keyboard(
+					[ ["/add", "/delete", 'Back 🔙'], ]
+				).resize())
+		}
+		catch (error) { console.log(error); }
+	});
 	bot.command("keyboard", (msg) => {
-		msg.reply("here it is", Markup.keyboard(
-			[ ["/add", "/delete", CANCEL_TEXT], ]
-		).resize())
+		try {
+			msg.reply("here it is", Markup.keyboard(
+			[ ["/add", "/delete", 'Back 🔙'], ]
+			).resize())
+		} 
+		catch (error) {	console.log(error); }						
 	})
 	bot.command("add", async (msg) => {
-		const User = new Memory(msg.from.id)
-		User.create()														
-		})
+		try {
+			const User = new Memory(msg.from.id)
+			User.create()		
+		} 
+		catch (error) {	console.log(error); }												
+	})
 	bot.command("remove", (msg) => {
-		const User = new Memory(msg.from.id)
-		User.delete()
+		try {
+			const User = new Memory(msg.from.id)
+			User.delete()
+		}
+		catch (error) { console.log(error); }
 	})
 	SetTimer(bot, '* * */12 * * *')
 }
+
+module.exports = init

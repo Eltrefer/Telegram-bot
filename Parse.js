@@ -1,8 +1,8 @@
-import * as cheerio from "cheerio"
-import axios from "axios"
-import Memory from "./Memory.js";
+const cheerio = require("cheerio");
+const axios = require("axios");
+const Memory = require("./Memory.js");
 
-export async function Parse(url, userID) {
+async function Parse(url, userID) {
   const User = new Memory(userID);
   
   return await axios.get(url)
@@ -27,3 +27,5 @@ export async function Parse(url, userID) {
     return result;
   })
 }
+
+module.exports = Parse

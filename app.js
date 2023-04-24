@@ -1,8 +1,8 @@
-import { Telegraf } from "telegraf";
-import { TOKEN } from "./TOKEN.js"
-import init from "./Message.js";
+const { Telegraf } = require("telegraf");
+const init = require("./Message.js");
+require("./.env")
 
-const bot = new Telegraf(TOKEN);
+const bot = new Telegraf(process.env.TOKEN);
 
 init(bot)
 

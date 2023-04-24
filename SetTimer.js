@@ -1,8 +1,8 @@
-import * as fs from "fs"
-import cron from "node-cron";
-import { Parse } from "./Parse.js";
+const fs = require("fs");
+const cron = require("node-cron");
+const Parse = require("./Parse.js");
 
-export default function SetTimer(bot, interval) {
+function SetTimer(bot, interval) {
 	cron.schedule(interval, async () => {
 		const data = JSON.parse( fs.readFileSync("memory.json", 'utf8') );
 		const firstID = Object.keys(data)[0];
@@ -10,16 +10,22 @@ export default function SetTimer(bot, interval) {
 		.then( (result) => {
 			for (const key in result) {
 			for (const id in data) {
-				bot.telegram.sendPhoto(
-					id,
-					result[key].img,
-					{caption: `
-						<strong>${ result[key].title }</strong>
-						\n${result[key].description}...
-						\n<a href="${result[key].url}">⤷ Product link </a> | #Techno360`,
-					parse_mode: "HTML" }
-				)
+				try {
+					bot.telegram.sendPhoto(
+						id,
+						result[key].img,
+						{caption: `
+							<strong>${ result[key].title }</strong>
+							\n${result[key].description}...
+							\n<a href="${result[key].url}">⤷ Product link </a> | #Techno360`,
+						parse_mode: "HTML" }
+					)
+				}
+				catch (error) { console.log(error); }
 			}}
 		})
+		.catch( (err) => { console.log(err); })
 	})
 }
+
+module.exports = SetTimer

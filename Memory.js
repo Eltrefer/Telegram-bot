@@ -1,6 +1,6 @@
-import * as fs from "fs"
+const fs = require("fs");
 
-export default class Memory {
+class Memory {
 	constructor(user) {
 		this.user = user;
 		this.data = JSON.parse( fs.readFileSync("memory.json", 'utf8') );
@@ -21,3 +21,4 @@ export default class Memory {
 	}
 }
 
+module.exports = Memory
